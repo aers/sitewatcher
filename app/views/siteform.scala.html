@@ -1,0 +1,17 @@
+@(siteForm: Form[Site])(implicit flash: Flash, messages: Messages)
+
+@implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-2", "col-md-10") }
+
+@main("sitewatcher - add site") {
+    <h1>sitewatcher - add site</h1>
+    @if(flash.get("error").isDefined) {
+        <div class="alert alert-danger">
+            @flash.get("error").get
+        </div>
+    }
+    @b3.form(routes.Application.addSiteFormSubmit) {
+        @b3.text( siteForm("alias"), '_label -> "Alias")
+        @b3.text( siteForm("url"), '_label -> "URL")
+        @b3.submit('class -> "btn btn-default"){ Submit }
+    }
+}

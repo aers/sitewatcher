@@ -1,0 +1,34 @@
+@(siteList: Seq[Site])(implicit flash: Flash)
+
+@import util.MyDateTimeFormat
+
+@main("sitewatcher") {
+    <h1>sitewatcher</h1>
+    @if(flash.get("message").isDefined) {
+        <div class="alert alert-success">
+            @flash.get("message").get
+        </div>
+    }
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Site Alias</th>
+            <th>URL</th>
+            <th>Feed</th>
+            <th>Latest Change Diff</th>
+            <th>Last Updated Time</th>
+        </tr>
+        @for(site <- siteList) {
+            <tr>
+                <td>@site.alias</td>
+                <td><a href="@site.url">@site.url</a></td>
+                <td><a href="@controllers.routes.Application.getFeed(site.alias)">RSS Feed</a></td>
+                <td><a href="@controllers.routes.Application.latestDiff(site.alias)">Latest Diff</a></td>
+                <td>@if(site.lastUpdated.isDefined) {
+                    @MyDateTimeFormat.OUTPUT.print(site.lastUpdated.get)
+                } else {
+                    None found
+                }</td>
+            </tr>
+        }
+    </table>
+}
